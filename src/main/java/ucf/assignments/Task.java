@@ -13,7 +13,6 @@ import java.util.UUID;
 public class Task {
 
     public static final int MAX_DESC_LENGTH = 256;
-    public static final int MIN_DESC_LENGTH = 1;
 
     private String description;
     private Date dueDate;
@@ -23,7 +22,6 @@ public class Task {
     public Task(String description, Date dueDate) {
         this.description = description.trim();
         this.dueDate = dueDate;
-        this.status = StatusType.NOT_COMPLETE;
         this.uuid = UUID.randomUUID();
     }
 
@@ -31,12 +29,12 @@ public class Task {
         return new Date();
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
     public void setDescription(String description) {
@@ -47,21 +45,17 @@ public class Task {
         this.status = status;
     }
 
-    public StatusType getStatus() {
-        return status;
-    }
-
     public boolean matches(Task task) {
         return task.getId().equals(uuid);
     }
 
     public String getFormatted() {
-        return DateUtils.format(dueDate) + "  " + description;
+        return DateUtils.format(dueDate) + " - " + description;
     }
 
     @Override
     public String toString() {
-        return getFormatted();
+        return description;
     }
 
     public UUID getId() {

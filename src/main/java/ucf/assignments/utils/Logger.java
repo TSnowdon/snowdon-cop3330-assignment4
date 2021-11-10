@@ -10,7 +10,7 @@ import ucf.assignments.App;
 public class Logger {
 
     private static Logger instance;
-    public static boolean debug = true;
+    public static boolean debug = false;
     private static String debugHeader = "[DEBUG]";
 
     public Logger() {
