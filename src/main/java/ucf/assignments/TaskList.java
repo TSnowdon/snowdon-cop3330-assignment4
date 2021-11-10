@@ -25,33 +25,12 @@ public class TaskList {
         this.tasks = tasks;
     }
 
-    public void addTask(Task task) {
-        tasks.add(task);
-    }
-
-    public void removeTask(Task task) {
-        tasks.remove(task);
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean containsTask(String desc) {
-        return getTask(desc) != null;
-    }
-
-    public Task getTask(String desc) {
-        for (Task task : tasks) {
-            if (task.getDescription().equalsIgnoreCase(desc) || task.toString().equalsIgnoreCase(desc)) {
-                return task;
-            }
-        }
-        return null;
     }
 
     public void updateTasks() {

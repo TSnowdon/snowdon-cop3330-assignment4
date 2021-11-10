@@ -10,24 +10,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ucf.assignments.utils.DateParser;
-import ucf.assignments.utils.Logger;
 
 import java.util.ArrayList;
 
 public class App extends Application {
 
-    private static TaskList currentList = null;
-    private static Task currentTask = null;
+    private static ArrayList<TaskList> lists;
+    private static TaskList currentList;
     private static StatusType currentView = null;
 
     @Override
     // Called before FXMLController
     public void start(Stage stage) throws Exception {
-        DateParser.initialize();
-        Logger.initialize();
+        System.out.println("start is called...");
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("ucf/assignments/scene.fxml"));
-        currentList = new TaskList("List 1");
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
@@ -40,21 +37,9 @@ public class App extends Application {
         launch(args);
     }
 
-    public static TaskList getCurrentTaskList() {
-        return currentList;
-    }
-
-    public static Task getCurrentTask() {
-        return currentTask;
-    }
-
-    public static void setCurrentTaskList(TaskList newList) {
-        currentList = newList;
-        Logger.debug("%s is set to the current list", newList.getName());
-    }
-
-    public static void setCurrentTask(Task target) {
-        currentTask = target;
-        Logger.debug("\"%s\" is set to the current task", target.getDescription());
+    public static void addTaskList(TaskList newList) {
+        /**
+         * Add newList to tasks
+         */
     }
 }

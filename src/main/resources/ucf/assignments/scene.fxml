@@ -18,18 +18,22 @@
     <padding>
         <Insets top="25" right="25" bottom="25" left="25"/>
     </padding>
+    <ComboBox promptText="Select List" prefWidth="150" onAction="#selectList" fx:id="selectListComboBox" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <Button text="Import List" onAction="#importList" prefWidth="150" fx:id="importListButton" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
     <Button text="Export List" onAction="#exportList" prefWidth="150" fx:id="exportListButton" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
-    <TextField promptText="List Name" prefWidth="150" fx:id="newListTextField" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+    <TextField promptText="List Name" prefWidth="150" fx:id="newListTextField" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Button text="New List" onAction="#newList" prefWidth="150" fx:id="newListButton" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <Button text="Update" onAction="#changeList" prefWidth="150" fx:id="changeListButton" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <Button text="Delete List" onAction="#deleteList" prefWidth="150" fx:id="deleteListButton" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
 
-    <TextField promptText="Task Description..." prefWidth="150" fx:id="newTaskDescriptionTextField" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-    <TextField promptText="YYYY-MM-DD" prefWidth="150" fx:id="newTaskDateField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <TextField text="Task Description..." prefWidth="150" fx:id="newTaskDescriptionTextField" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField text="Due Date YYYY-MM-DD" prefWidth="150" fx:id="newTaskDateField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     <Button text="Add Task" onAction="#newTask" prefWidth="150" fx:id="newTaskButton" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
     <Button text="Delete Task" onAction="#deleteTask" prefWidth="150" fx:id="deleteTaskButton" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
     <Button text="Update Task" onAction="#updateTask" prefWidth="150" fx:id="updateTaskButton" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
 
     <ComboBox promptText="Select View" prefWidth="300" onAction="#selectView" GridPane.columnSpan="2" fx:id="selectViewComboBox" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
 
-    <ListView prefWidth="200" prefHeight="100" fx:id="taskListView" onMouseClicked="#listViewClicked" GridPane.columnSpan="4" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <ListView prefWidth="200" prefHeight="100" fx:id="taskListView" GridPane.columnSpan="4" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
 </GridPane>

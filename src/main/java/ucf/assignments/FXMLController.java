@@ -5,21 +5,14 @@
 
 package ucf.assignments;
 
-import com.sun.javafx.collections.ImmutableObservableList;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.util.Callback;
-import ucf.assignments.utils.DateParser;
-import ucf.assignments.utils.Logger;
 
 import java.net.URL;
 import java.util.*;
@@ -30,7 +23,8 @@ public class FXMLController implements Initializable {
     public Button exportListButton;
     public Button newListButton;
     public Button newTaskButton;
-
+    public Button changeListButton;
+    public Button deleteListButton;
     public Button deleteTaskButton;
     public Button updateTaskButton;
 
@@ -59,42 +53,6 @@ public class FXMLController implements Initializable {
          * Update the list of possible Views that can be selected
          * Use the String of displayNames from the StatusType
          */
-    }
-
-    public void render() {
-        clearTextFields();
-        displayCurrentTaskList();
-    }
-
-    public void clearTextFields() {
-        newTaskDateField.clear();
-        newTaskDescriptionTextField.clear();
-    }
-
-    public void displayCurrentTaskList() {
-        TaskList curr = App.getCurrentTaskList();
-        displayTasks(curr);
-    }
-
-    public void displayTasks(TaskList list) {
-        taskListView.getItems().clear();
-
-        Map<String, ObservableValue<Boolean>> map = new HashMap<>();
-        for (Task task : list.getTasks()) {
-            map.put(task.toString(), new SimpleBooleanProperty(false));
-        }
-
-        // map.put("Task1", new SimpleBooleanProperty(true));
-        // map.put("Task2", new SimpleBooleanProperty(true));
-        // map.put("Task3", new SimpleBooleanProperty(true));
-
-        taskListView.setEditable(true);
-        taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        taskListView.getItems().addAll(map.keySet());
-
-        Callback<String, ObservableValue<Boolean>> callback = map::get;
-        taskListView.setCellFactory(lv -> new CheckBoxListCell<>(callback));
     }
 
     public void importList(ActionEvent actionEvent) {
@@ -128,22 +86,26 @@ public class FXMLController implements Initializable {
     }
 
     public void newList(ActionEvent actionEvent) {
-        String newListName = newListTextField.getText();
+        /**
+         *      Scan the value in the text field
+         *      If there is no value in the Text Field
+         *          Don't do anything
+         *      If there is a value in the Text Field
+         *          Check that there is no other TaskList with that name
+         *          If there is no TaskList with that name
+         *              Add a new TaskList
+         *          If not then there is nothing
+         */
+    }
 
-        if (newListName.isEmpty() || newListName.isBlank()) {
-            Logger.debug("No input detected.");
-            return;
-        }
-
-        if (App.getCurrentTaskList().getName().equals(newListName)) {
-            Logger.debug("The List %s already exists", newListName);
-            return;
-        }
-
-        TaskList newList = new TaskList(newListName);
-        App.setCurrentTaskList(newList);
-        Logger.debug("List %s created", newListName);
-        render();
+    public void selectList(ActionEvent actionEvent) {
+        /**
+         *      Load the selected List into the TaskList view (TM)
+         *      If for some reason that TaskList doesn't exist
+         *          don't do anything
+         *      If it does exist
+         *          change the TaskList view (TM)
+         */
     }
 
     public void selectView(ActionEvent actionEvent) {
@@ -158,22 +120,6 @@ public class FXMLController implements Initializable {
     }
 
     public void newTask(ActionEvent actionEvent) {
-        String desc = newTaskDescriptionTextField.getText();
-        String date = newTaskDateField.getText();
-
-        if (desc.isEmpty()) {
-            return;
-        }
-
-
-        if (App.getCurrentTaskList().containsTask(desc)) {
-            return;
-        }
-
-        Date taskDate = DateParser.parse(date);
-        Task newTask = new Task(desc, taskDate);
-        App.getCurrentTaskList().addTask(newTask);
-        render();
         /**
          *      Take the values from the two Text Fields
          *      If either one is empty
@@ -191,21 +137,20 @@ public class FXMLController implements Initializable {
     }
 
     public void changeList(ActionEvent actionEvent) {
-        TaskList curr = App.getCurrentTaskList();
-        if (curr != null) {
-            App.getCurrentTaskList().setName(newListTextField.getText());
-            Logger.debug("%s has been renamed to %s", curr.getName(), newListTextField.getText());
-        } else {
-            Logger.debug("Current list doesn't exist");
-        }
-        render();
+        /**
+         * Change the name of the current selected
+         * TasKlist to the value of whatever is in the textbox
+         */
+    }
+
+    public void deleteList(ActionEvent actionEvent) {
+        /**
+         * Delete the current selected list
+         * change view to the next list
+         */
     }
 
     public void deleteTask(ActionEvent actionEvent) {
-        if (App.getCurrentTask() != null) {
-            App.getCurrentTaskList().removeTask(App.getCurrentTask());
-            render();
-        }
         /**
          * Delete the currently selected task
          * From the currently selected tasklist
@@ -219,16 +164,5 @@ public class FXMLController implements Initializable {
          *
          * Take into account both description value and date value
          */
-    }
-
-    public void listViewClicked(MouseEvent mouseEvent) {
-        if (mouseEvent.getTarget() != null) {
-            if (mouseEvent.getTarget() instanceof CheckBoxListCell) {
-                String taskText = ((CheckBoxListCell) mouseEvent.getTarget()).getText();
-                if (App.getCurrentTaskList().containsTask(taskText)) {
-                    App.setCurrentTask(App.getCurrentTaskList().getTask(taskText));
-                }
-            }
-        }
     }
 }
