@@ -5,8 +5,13 @@
 
 package ucf.assignments;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,7 +30,6 @@ public class FXMLController implements Initializable {
     public Button importListButton;
     public Button exportListButton;
     public Button clearListButton;
-    public Button newListButton;
     public Button newTaskButton;
 
     public Button deleteTaskButton;
@@ -35,10 +39,9 @@ public class FXMLController implements Initializable {
     public TextField newTaskDescriptionTextField;
     public TextField newTaskDateField;
 
-    public ComboBox<String> selectListComboBox;
     public ComboBox<String> selectViewComboBox;
 
-    public ListView<String> taskListView;
+    public ListView<Task> taskListView;
     @FXML
     private Label label;
 
@@ -56,11 +59,20 @@ public class FXMLController implements Initializable {
          * Update the list of possible Views that can be selected
          * Use the String of displayNames from the StatusType
          */
+        render();
     }
 
     public void render() {
+        Logger.debug("rendering.");
         clearTextFields();
+        displayStatusView();
         displayCurrentTaskList();
+    }
+
+    public void displayStatusView() {
+        if (selectViewComboBox.getItems().isEmpty()) {
+            selectViewComboBox.getItems().addAll(StatusType.getDisplayNames());
+        }
     }
 
     public void clearTextFields() {
@@ -70,28 +82,39 @@ public class FXMLController implements Initializable {
 
     public void displayCurrentTaskList() {
         TaskList curr = App.getCurrentTaskList();
-        displayTasks(curr);
+        if (curr != null) {
+            Logger.debug("rendering..");
+            displayTasks(curr);
+        }
     }
 
     public void displayTasks(TaskList list) {
+        Logger.debug("rendering...");
         taskListView.getItems().clear();
-        Map<String, ObservableValue<Boolean>> map = new HashMap<>();
+        Map<Task, ObservableValue<Boolean>> map = new HashMap<>();
+        StatusType currView = App.getCurrentView();
+        Logger.debug("-> Now viewing %s tasks", currView != null ? currView.getDisplayName() : "DEFAULT");
         for (Task task : list.getTasks().values()) {
-            map.put(task.getFormatted(), new SimpleBooleanProperty(false));
+            if (currView == null || task.getStatus().matches(currView)) {
+                map.put(task, new SimpleBooleanProperty(false));
+            }
         }
-
-        // map.put("Task1", new SimpleBooleanProperty(true));
-        // map.put("Task2", new SimpleBooleanProperty(true));
-        // map.put("Task3", new SimpleBooleanProperty(true));
 
         taskListView.setEditable(false);
         taskListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
         taskListView.getItems().addAll(map.keySet());
 
-        Callback<String, ObservableValue<Boolean>> callback = map::get;
-        taskListView.setCellFactory(lv ->
-                new CheckBoxListCell<>(callback));
+        taskListView.setCellFactory(CheckBoxListCell.forListView(new Callback<Task, ObservableValue<Boolean>>() {
+            @Override
+            public ObservableValue<Boolean> call(Task task) {
+                BooleanProperty observable = new SimpleBooleanProperty(task.getStatus().getDisplayValue());
+                observable.addListener((obs, before, after) -> {
+                    task.setStatus(after ? StatusType.COMPLETE : StatusType.NOT_COMPLETE);
+                });
+                return observable;
+            }
+        }));
     }
 
     public void importList(ActionEvent actionEvent) {
@@ -134,14 +157,12 @@ public class FXMLController implements Initializable {
     }
 
     public void selectView(ActionEvent actionEvent) {
-        /**
-         *      Take the tasks from the currentTaskList and remove that ones
-         *      that don't meet the conditions of the Status Type
-         *      If the view is ALL
-         *          Show all
-         *      If the view
-         *
-         */
+        String viewValue = selectViewComboBox.getValue();
+        StatusType viewType = StatusType.getType(viewValue);
+        if (viewType != null) {
+            App.setCurrentView(viewType);
+        }
+        render();
     }
 
     public void newTask(ActionEvent actionEvent) {

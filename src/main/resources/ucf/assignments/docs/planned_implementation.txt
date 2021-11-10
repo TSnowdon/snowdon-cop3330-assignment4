@@ -1,9 +1,9 @@
 Your application shall satisfy the following requirements (note that, as in the real world, these may have changed since [Part 1]):
 
-The application shall manage a single list of items
-The list shall have the capacity to store at least 100 unique items
+✓ The application shall manage a single list of items
+✓ The list shall have the capacity to store at least 100 unique items
 
-An item shall have a description
+✓ An item shall have a description
 ✓ A description shall be between 1 and 256 characters in length
 ✓ An item shall have a due date
 ✓ A due date shall be a valid date within the Gregorian Calendar
@@ -16,8 +16,8 @@ An item shall have a description
 ✓ A user shall be able to edit the due date of an item within the list
 ✓ A user shall be able to mark an item in the list as either complete or incomplete
 ✓ A user shall be able to display all of the existing items in the list
-A user shall be able to display only the incomplete items in the list
-A user shall be able to display only the completed items in the list
+✓ A user shall be able to display only the incomplete items in the list
+✓ A user shall be able to display only the completed items in the list
 
 A user shall be able to save the list (and all of its items) to external storage
 A user shall be able to load a list (and all of its items) from external storage

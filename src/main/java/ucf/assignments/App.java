@@ -42,14 +42,6 @@ public class App extends Application {
         return currentList;
     }
 
-    public static Task getCurrentTask() {
-        return currentTask;
-    }
-
-    public static void clearCurrentTask() {
-        currentTask = null;
-    }
-
     public static void updateCurrentTaskList(Task task) {
         currentList.updateTask(task);
     }
@@ -59,8 +51,24 @@ public class App extends Application {
         Logger.debug("%s is set to the current list", newList.getName());
     }
 
+    public static Task getCurrentTask() {
+        return currentTask;
+    }
+
+    public static void clearCurrentTask() {
+        currentTask = null;
+    }
+
     public static void setCurrentTask(Task target) {
         currentTask = target;
         Logger.debug("\"%s\" is set to the current task", target.getDescription());
+    }
+
+    public static StatusType getCurrentView() {
+        return currentView;
+    }
+
+    public static void setCurrentView(StatusType view) {
+        currentView = view;
     }
 }

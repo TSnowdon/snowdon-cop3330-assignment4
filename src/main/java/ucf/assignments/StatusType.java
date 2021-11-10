@@ -5,17 +5,45 @@
 
 package ucf.assignments;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum StatusType {
-    COMPLETE("Done"),
-    NOT_COMPLETE("Not Done");
+    ALL("All", null),
+    COMPLETE("Complete", true),
+    NOT_COMPLETE("Incomplete", false);
 
     private final String displayName;
+    private final Boolean displayValue;
 
-    StatusType(String displayName) {
+    StatusType(String displayName, Boolean displayValue) {
         this.displayName = displayName;
+        this.displayValue = displayValue;
     }
 
     public String getDisplayName() {
-        return "displayName";
+        return displayName;
+    }
+
+    public static List<String> getDisplayNames() {
+        return Arrays.stream(values()).map(StatusType::getDisplayName).collect(Collectors.toList());
+    }
+
+    public static StatusType getType(String displayName) {
+        for (StatusType type : values()) {
+            if (type.getDisplayName().equalsIgnoreCase(displayName)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    public boolean getDisplayValue() {
+        return displayValue;
+    }
+
+    public boolean matches(StatusType type) {
+        return this == type || type == ALL;
     }
 }
