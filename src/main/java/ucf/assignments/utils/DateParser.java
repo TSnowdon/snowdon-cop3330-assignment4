@@ -5,23 +5,23 @@
 
 package ucf.assignments.utils;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-public class DateUtils {
+public class DateParser {
 
-    private static DateUtils instance;
+    private static DateParser instance;
 
-    public DateUtils() {
+    public DateParser() {
 
     }
 
     /**
      * Parses from Strings to Dates
      * Returns todays date if date is empty
-     *
      * @param date The input string, must be formatted as "YYYY-MM-DD".
      * @return A new Date that matches the date described in "date".
      */
@@ -47,13 +47,7 @@ public class DateUtils {
         return out;
     }
 
-    public static String format(Date date) {
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat format = new SimpleDateFormat(pattern);
-        return format.format(date);
-    }
-
     public static void initialize() {
-        instance = new DateUtils();
+        instance = new DateParser();
     }
 }

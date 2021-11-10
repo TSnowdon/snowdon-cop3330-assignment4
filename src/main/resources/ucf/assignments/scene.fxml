@@ -20,7 +20,6 @@
     </padding>
     <Button text="Import List" onAction="#importList" prefWidth="150" fx:id="importListButton" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
     <Button text="Export List" onAction="#exportList" prefWidth="150" fx:id="exportListButton" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-    <Button text="Clear List" onAction="#clearList" prefWidth="150" fx:id="clearListButton" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
 
     <TextField promptText="List Name" prefWidth="150" fx:id="newListTextField" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
 

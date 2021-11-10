@@ -5,37 +5,32 @@
 
 package ucf.assignments;
 
-import ucf.assignments.utils.Logger;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class TaskList {
 
     private String name;
-    private HashMap<UUID, Task> tasks;
+    private ArrayList<Task> tasks;
 
     public TaskList(String name) {
         this.name = name;
-        this.tasks = new HashMap<>();
+        this.tasks = new ArrayList<>();
     }
 
-    public HashMap<UUID, Task> getTasks() {
+    public ArrayList<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(HashMap<UUID, Task> tasks) {
+    public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
     public void addTask(Task task) {
-        tasks.put(task.getId(), task);
+        tasks.add(task);
     }
 
     public void removeTask(Task task) {
-        tasks.remove(task.getId());
-        System.out.println(tasks);
+        tasks.remove(task);
     }
 
     public String getName() {
@@ -50,45 +45,20 @@ public class TaskList {
         return getTask(desc) != null;
     }
 
-    public boolean containsTask(Task task) {
-        return tasks.containsKey(task.getId());
-    }
-
-    public Task getTask(String formatted) {
-        for (Task value : tasks.values()) {
-            if (value.getFormatted().equalsIgnoreCase(formatted)) {
-                return value;
+    public Task getTask(String desc) {
+        for (Task task : tasks) {
+            if (task.getDescription().equalsIgnoreCase(desc) || task.toString().equalsIgnoreCase(desc)) {
+                return task;
             }
         }
         return null;
     }
 
-    public Task getTask(UUID uuid) {
-        return tasks.get(uuid);
-    }
-
-    public void updateTasks(Task curr) {
+    public void updateTasks() {
         /**
          * For each Task in tasks
          * check if there dueDate has passed
          * if there dueDate has passed update there status
          */
-    }
-
-    public void updateTask(Task input) {
-        tasks.put(input.getId(), input);
-        Logger.debug("Task updated %s", tasks.values());
-    }
-
-    @Override
-    public String toString() {
-        return "TaskList{" +
-                "name='" + name + '\'' +
-                ", tasks=" + tasks +
-                '}';
-    }
-
-    public void clearTasks() {
-        tasks = new HashMap<>();
     }
 }
